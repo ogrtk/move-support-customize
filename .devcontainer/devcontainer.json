@@ -1,0 +1,14 @@
+{
+	"name": "Debian",
+	"dockerFile": "Dockerfile",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"Gruntfuggly.todo-tree",
+				"MS-CEINTL.vscode-language-pack-ja",
+				"ChakrounAnas.turbo-console-log",
+				"biomejs.biome"
+			]
+		}
+	}
+}

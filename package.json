@@ -1,0 +1,18 @@
+{
+	"name": "cust-movesupport",
+	"version": "1.0.0",
+	"main": "src/index.js",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"vite": "^6.0.5",
+		"@anthropic-ai/claude-code": "^1.0.65"
+	}
+}
