@@ -4,7 +4,16 @@
  */
 
 (() => {
-	// 定数定義 - 必要に応じて変更してください
+	//********************************************
+	// 設定
+	//********************************************
+	// チェック処理を行うイベント
+	//   確認画面なしの場合、"form.submit"
+	//   確認画面ありの場合、"form.confirm"
+	//   ステップフォームの場合、"form.step.moving"
+	const VALIDATION_EVENT = "form.submit";
+
+	// フィールドコード
 	const FIELD_CODES = {
 		TABLE_CODE: "テーブル", // テーブルのフィールドコード
 		START_TIME: "開始時刻", // 開始時刻のフィールドコード
@@ -16,6 +25,9 @@
 	const ERROR_MESSAGES = {
 		INVALID_TIME_RANGE: "開始時刻は終了時刻より前に設定してください",
 	};
+	//********************************************
+	// 設定 ここまで
+	//********************************************
 
 	/**
 	 * 時刻文字列を比較用のDateオブジェクトに変換
@@ -43,6 +55,7 @@
 	 * @returns {boolean} - バリデーション結果（true: OK, false: NG）
 	 */
 	function validateTimeRange(rowIndex, changedFieldValues = {}) {
+		// 画面上のデータを取得
 		const record = formBridge.fn.getRecord();
 		const tableData = record[FIELD_CODES.TABLE_CODE];
 
@@ -52,7 +65,9 @@
 
 		const row = tableData.value[rowIndex];
 
-		// 変更されたフィールドの値があれば使用、なければレコードから取得
+		// チェック対象の値を取得
+		// changeイベント時、formBridge.fn.getRecord()には変更前の値が入っているため
+		// 変更されたフィールドの値がある場合はそちらを優先して使用
 		const startTimeValue =
 			changedFieldValues[FIELD_CODES.START_TIME] !== undefined
 				? changedFieldValues[FIELD_CODES.START_TIME]
@@ -73,11 +88,13 @@
 			return true;
 		}
 
+		// Date型に変換
 		const startTime = parseTimeString(startTimeValue);
 		const endTime = parseTimeString(endTimeValue);
 
+		// 変換失敗時はエラーとする
 		if (!startTime || !endTime) {
-			return true; // パース失敗時はOK
+			return false;
 		}
 
 		// 翌日フラグがチェックされている場合は、開始時刻 > 終了時刻でもOK
@@ -85,6 +102,7 @@
 			return true;
 		}
 
+		// 比較結果を返す
 		return startTime <= endTime;
 	}
 
@@ -194,7 +212,7 @@
 	);
 
 	// フォーム送信時の全体バリデーション
-	formBridge.events.on("form.submit", (context) => {
+	formBridge.events.on(VALIDATION_EVENT, (context) => {
 		const allValid = validateAllTimeRanges();
 
 		if (!allValid) {

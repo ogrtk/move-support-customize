@@ -32,13 +32,24 @@
 		USAGE_YEAR_MONTH: "利用年月",
 		TOTAL: "合計",
 	};
+
+	// テーブル見出し
+	const TABLE_HEADDER = {
+		YEAR_MONTH: "年月",
+		COUNT: "件数",
+		TOTAL_AMOUNT: "合計金額",
+	};
 	//********************************************
 	// 設定ここまで
 	//********************************************
 
 	// テーブルのヘッダーとスタイル設定
 	const TABLE_CONFIG = {
-		HEADERS: ["年月", "件数", "合計金額"],
+		HEADERS: [
+			TABLE_HEADDER.YEAR_MONTH,
+			TABLE_HEADDER.COUNT,
+			TABLE_HEADDER.TOTAL_AMOUNT,
+		],
 		STYLE: `
           #totaltable table {
               border-collapse: collapse;
